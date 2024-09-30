@@ -22,10 +22,11 @@ def send_dict_over_i2c(bus, address, data_dict):
             print(f"Error al enviar chunk {i//chunk_size + 1}: {e}")
         time.sleep(0.1)  # Pequeña pausa entre chunks
 
+
+        # BLOQUE DE CÓDIGO PARA VALIDAR LA INFORMACIÓN GUARDADA EN LA RASPBERRY PI PICO :D
         try:
             read_data = bus.read_i2c_block_data(I2C_SLAVE_ADDRESS, i, chunk_size)
-            print("LEYENDO LO QUE VIENE DE LA PI PICO MOR \n")
-            read_data =  bytes(read_data).decode('utf-8')
+            read_data =  bytes(read_data).decode('utf-8') # Paso de Bytes a utf-8 
             if('}' in list(read_data)):
                  
                  print(f"Read  at 0x{i:02X}: '{read_data[:read_data.index('}')+1]}'")
@@ -40,6 +41,7 @@ def main():
     # Inicializar el bus I2C
     bus = smbus.SMBus(I2C_BUS)
 
+    # Ejemplo json que se envía
     mensaje_dic = {
         "tipo": "Audio",
         "deteccion": "sirena",

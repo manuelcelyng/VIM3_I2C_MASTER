@@ -14,7 +14,7 @@ def main():
     mem_address = 0
     while True:
         msg = f"Hello, I2C slave! - 0x{mem_address:02X}"
-        msg_bytes = list(msg.encode('ascii'))
+        msg_bytes = list(msg.encode('utf-8'))
         try:
             # Escribir mensaje en la dirección de memoria del esclavo
             bus.write_i2c_block_data(I2C_SLAVE_ADDRESS, mem_address, msg_bytes)
@@ -23,16 +23,16 @@ def main():
             # Leer datos del esclavo
             split = 5
             read_data = bus.read_i2c_block_data(I2C_SLAVE_ADDRESS, mem_address, split)
-            print(f"Read  at 0x{mem_address:02X}: '{bytes(read_data).decode('ascii')}'")
+            print(f"Read  at 0x{mem_address:02X}: '{bytes(read_data).decode('utf-8')}'")
             
             read_data = bus.read_i2c_block_data(I2C_SLAVE_ADDRESS, mem_address + split, len(msg) - split)
-            print(f"Read  at 0x{mem_address + split:02X}: '{bytes(read_data).decode('ascii')}'")
+            print(f"Read  at 0x{mem_address + split:02X}: '{bytes(read_data).decode('utf-8')}'")
         
         except IOError as e:
             print(f"Error de I/O: {e}")
         
         time.sleep(2)  # Espera antes de la siguiente iteración
-        mem_address = (mem_address + 32) % 256
+        
         print(mem_address)
 
 if __name__ == "__main__":
